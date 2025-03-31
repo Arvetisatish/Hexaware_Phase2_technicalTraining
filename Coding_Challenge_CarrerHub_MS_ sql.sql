@@ -133,6 +133,11 @@ JOIN Jobs j ON app.JobID = j.JobID
 JOIN Applicants a ON app.ApplicantID = a.ApplicantID
 WHERE j.JobLocation = 'CityX' AND a.Experience >= 3;
 
+ALTER TABLE Applicants ADD Experience INT NOT NULL DEFAULT 0;
+UPDATE Applicants SET Experience = 3 WHERE FirstName = 'Amit' AND LastName = 'Sharma';
+UPDATE Applicants SET Experience = 5 WHERE FirstName = 'Priya' AND LastName = 'Rao';
+UPDATE Applicants SET Experience = 2 WHERE FirstName = 'Raj' AND LastName = 'Patel';
+
 -- Query_11 Retrieve distinct job titles with salaries between $60,000 and $80,000
 SELECT DISTINCT JobTitle FROM Jobs WHERE Salary BETWEEN 600000 AND 800000;
 
