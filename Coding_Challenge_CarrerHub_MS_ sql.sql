@@ -78,14 +78,14 @@ INSERT INTO Applications (JobID, ApplicantID, ApplicationDate, CoverLetter) VALU
 (3, 3, GETDATE(), 'I am passionate about web development and Wipro is a great fit.');
 
 
--- Count the number of applications received for each job listing
+--  Query_5 Count the number of applications received for each job listing
 SELECT j.JobTitle, COUNT(a.ApplicationID) AS ApplicationCount
 FROM Jobs j
 LEFT JOIN Applications a ON j.JobID = a.JobID
 GROUP BY j.JobTitle;
 
 
--- Retrieve job listings within a specified salary range
+-- Query_6  Retrieve job listings within a specified salary range
 DECLARE @MinSalary DECIMAL(10,2) = 600000;
 DECLARE @MaxSalary DECIMAL(10,2) = 800000;
 SELECT j.JobTitle, c.CompanyName, j.JobLocation, j.Salary
@@ -95,7 +95,7 @@ WHERE j.Salary BETWEEN @MinSalary AND @MaxSalary;
 
 
 
--- Retrieve job application history for a specific applicant
+--  Query_7 Retrieve job application history for a specific applicant
 DECLARE @ApplicantID INT = 1;
 SELECT j.JobTitle, c.CompanyName, a.ApplicationDate
 FROM Applications a
@@ -104,11 +104,11 @@ JOIN Companies c ON j.CompanyID = c.CompanyID
 WHERE a.ApplicantID = @ApplicantID;
 
 
--- Calculate the average salary of job listings, excluding zero salary
+-- Query_8 Calculate the average salary of job listings, excluding zero salary
 SELECT AVG(Salary) AS AverageSalary FROM Jobs WHERE Salary > 0;
 
 
--- Identify the company with the most job listings
+-- Query_9 Identify the company with the most job listings
 SELECT TOP 1 WITH TIES c.CompanyName, COUNT(j.JobID) AS JobCount
 FROM Companies c
 JOIN Jobs j ON c.CompanyID = j.CompanyID
@@ -122,30 +122,26 @@ UPDATE Applicants SET Experience = 5 WHERE FirstName = 'Priya' AND LastName = 'R
 UPDATE Applicants SET Experience = 2 WHERE FirstName = 'Raj' AND LastName = 'Patel';
 
 
-
-
-
-
 UPDATE Jobs SET JobLocation = 'CityX' WHERE JobID = 1;
 
 SELECT * FROM Applicants;
 
--- Find applicants who applied to jobs in a specific city and have at least 3 years of experience
+-- Query_10 Find applicants who applied to jobs in a specific city and have at least 3 years of experience
 SELECT a.FirstName, a.LastName
 FROM Applications app
 JOIN Jobs j ON app.JobID = j.JobID
 JOIN Applicants a ON app.ApplicantID = a.ApplicantID
 WHERE j.JobLocation = 'CityX' AND a.Experience >= 3;
 
--- Retrieve distinct job titles with salaries between $60,000 and $80,000
+-- Query_11 Retrieve distinct job titles with salaries between $60,000 and $80,000
 SELECT DISTINCT JobTitle FROM Jobs WHERE Salary BETWEEN 600000 AND 800000;
 
--- Find jobs with no applications
+-- Query_12 Find jobs with no applications
 SELECT j.JobTitle FROM Jobs j
 LEFT JOIN Applications a ON j.JobID = a.JobID
 WHERE a.ApplicationID IS NULL;
 
--- Retrieve applicants and the companies and positions they applied for
+-- Query 13 Retrieve applicants and the companies and positions they applied for
 SELECT a.FirstName, a.LastName, c.CompanyName, j.JobTitle
 FROM Applications app
 JOIN Applicants a ON app.ApplicantID = a.ApplicantID
@@ -154,31 +150,31 @@ JOIN Companies c ON j.CompanyID = c.CompanyID;
 
 
 
--- Retrieve companies with the count of jobs posted, even if they received no applications
+-- Query_14 Retrieve companies with the count of jobs posted, even if they received no applications
 SELECT c.CompanyName, COUNT(j.JobID) AS JobCount
 FROM Companies c
 LEFT JOIN Jobs j ON c.CompanyID = j.CompanyID
 GROUP BY c.CompanyName;
 
--- Retrieve applicants and the companies and positions they applied for, including those who have not applied
+-- Query_15 Retrieve applicants and the companies and positions they applied for, including those who have not applied
 SELECT a.FirstName, a.LastName, c.CompanyName, j.JobTitle
 FROM Applicants a
 LEFT JOIN Applications app ON a.ApplicantID = app.ApplicantID
 LEFT JOIN Jobs j ON app.JobID = j.JobID
 LEFT JOIN Companies c ON j.CompanyID = c.CompanyID;
 
--- Find companies that have posted jobs with a salary higher than the average salary of all jobs
+-- Query_16 Find companies that have posted jobs with a salary higher than the average salary of all jobs
 SELECT DISTINCT c.CompanyName FROM Companies c
 JOIN Jobs j ON c.CompanyID = j.CompanyID
 WHERE j.Salary > (SELECT AVG(Salary) FROM Jobs);
 
--- Display applicants with their names and a concatenated city-state string
+-- Query_17 Display applicants with their names and a concatenated city-state string
 SELECT FirstName, LastName, CONCAT(Email, ', ', Phone) AS ContactDetails FROM Applicants;
 
--- Retrieve jobs with titles containing 'Developer' or 'Engineer'
+-- Query_18 Retrieve jobs with titles containing 'Developer' or 'Engineer'
 SELECT * FROM Jobs WHERE JobTitle LIKE '%Developer%' OR JobTitle LIKE '%Engineer%';
 
--- Retrieve all applicants and jobs they applied for, including unmatched applicants and jobs
+-- Query_19 Retrieve all applicants and jobs they applied for, including unmatched applicants and jobs
 SELECT a.FirstName, a.LastName, j.JobTitle FROM Applicants a
 FULL OUTER JOIN Applications app ON a.ApplicantID = app.ApplicantID
 FULL OUTER JOIN Jobs j ON app.JobID = j.JobID;
@@ -193,6 +189,6 @@ VALUES ('Karthik', 'Reddy', 'karthik.reddy@example.com', '9876544321',
         '4 years experience in software engineering', 4);
 
 
--- List combinations of applicants and companies in a city where the applicant has >2 years experience
+-- Query_20 List combinations of applicants and companies in a city where the applicant has >2 years experience
 SELECT a.FirstName, a.LastName, c.CompanyName FROM Applicants a
 CROSS JOIN Companies c WHERE c.Location = 'Chennai' AND a.Experience > 2;
